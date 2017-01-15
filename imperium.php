@@ -50,7 +50,7 @@ includeLang('imperium');
 	$planet = array();
 	$parse  = $lang;
 
-while ($p = mysql_fetch_array($planetsrow)) {
+while ($p = $planetsrow->fetch_array()) {
 	$planet[] = $p;
 }
 

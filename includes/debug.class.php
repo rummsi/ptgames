@@ -141,12 +141,12 @@ EOF;
             `error_sender` = '{$user['id']}' ,
             `error_time` = '".time()."' ,
             `error_type` = '{$title}' ,
-            `error_text` = '".mysql_escape_string($message)."';";
-        $sqlquery = mysql_query(str_replace("{{table}}", $dbsettings["prefix"].'errors',$query))
+            `error_text` = '".Database::$dbHandle->real_escape_string($message)."';";
+        $sqlquery = Database::$dbHandle->query(str_replace("{{table}}", $dbsettings["prefix"].'errors',$query))
             or die('error fatal');
         $query = "explain select * from {{table}}";
-        $q = mysql_fetch_array(mysql_query(str_replace("{{table}}", $dbsettings["prefix"].
-            'errors', $query))) or die('error fatal: ');
+        $q = Database::$dbHandle->query(str_replace("{{table}}", $dbsettings["prefix"].
+            'errors', $query))->fetch_array() or die('error fatal: ');
 
         if (!function_exists('message')) {
             echo "Erreur, merci de contacter l'admin. Erreur n�: <b>".$q['rows']."</b>";
