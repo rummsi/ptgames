@@ -28,12 +28,13 @@
  *
  */
 
-define('INSIDE' , true);
-define('INSTALL' , false);
-require_once dirname(__FILE__) .'/common.php';
-
 function ShowLeftMenu ( $Level , $Template = 'left_menu') {
 	global $lang, $user, $dpath, $game_config;
+	if(!empty($user['id'])){
+		$userid = $user['id'];
+	}else{
+		$userid = '';
+	}
 
 	includeLang('leftmenu');
 
@@ -49,13 +50,13 @@ function ShowLeftMenu ( $Level , $Template = 'left_menu') {
 	$parse['XNovaRelease']    = VERSION;
 	$parse['dpath']           = $dpath;
 	$parse['forum_url']       = $game_config['forum_url'];
-	$parse['mf']              = "Hauptframe";
-	$rank                     = doquery("SELECT `total_rank` FROM {{table}} WHERE `stat_code` = '1' AND `stat_type` = '1' AND `id_owner` = '". $user['id'] ."';",'statpoints',true);
+	$parse['mf']              = "_self";
+	$rank                     = doquery("SELECT `total_rank` FROM {{table}} WHERE `stat_code` = '1' AND `stat_type` = '1' AND `id_owner` = '". $userid ."';",'statpoints',true);
 	$parse['user_rank']       = $rank['total_rank'];
 	if ($Level > 0) {
 		$parse['ADMIN_LINK']  = "
 		<tr>
-			<td colspan=\"2\"><div><a href=\"admin/leftmenu.php\"><font color=\"lime\">".$lang['user_level'][$Level]."</font></a></div></td>
+			<td colspan=\"2\"><div><a href=\"admin/overview.php\"><font color=\"lime\">".$lang['user_level'][$Level]."</font></a></div></td>
 		</tr>";
 	} else {
 		$parse['ADMIN_LINK']  = "";
@@ -74,7 +75,7 @@ function ShowLeftMenu ( $Level , $Template = 'left_menu') {
 	if ($game_config['enable_announces'] == 1) {
 		$parse['announce_link']  = "
 		<tr>
-			<td colspan=\"2\"><div><a href=\"annonce.php\" target=\"Hauptframe\">Annonces</a></div></td>
+			<td colspan=\"2\"><div><a href=\"annonce.php\" target=\"_self\">Annonces</a></div></td>
 		</tr>";
 	} else {
 		$parse['announce_link']  = "";
@@ -83,7 +84,7 @@ function ShowLeftMenu ( $Level , $Template = 'left_menu') {
 		//Maintenant le marchand
 	if ($game_config['enable_marchand'] == 1) {
 		$parse['marchand_link']  = "
-			<td colspan=\"2\"><div><a href=\"marchand.php\" target=\"Hauptframe\">Marchand</a></div></td>";
+			<td colspan=\"2\"><div><a href=\"marchand.php\" target=\"_self\">Marchand</a></div></td>";
 	} else {
 		$parse['marchand_link']  = "";
 	}
@@ -101,8 +102,6 @@ function ShowLeftMenu ( $Level , $Template = 'left_menu') {
 
 	return $Menu;
 }
-	$Menu = ShowLeftMenu ( $user['authlevel'] );
-	display ( $Menu, "Menu", '', false );
 
 // -----------------------------------------------------------------------------------------------------------
 // History version
