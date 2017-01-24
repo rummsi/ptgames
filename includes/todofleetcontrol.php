@@ -111,3 +111,4 @@ include(ROOT_PATH . 'includes/functions/IsVacationMode.'.PHPEXT);
 include(ROOT_PATH . 'leftmenu.'.PHPEXT);
 include(ROOT_PATH . 'admin/leftmenu.'.PHPEXT);
 include(ROOT_PATH . 'includes/classes/Template.'.PHPEXT);
+include(ROOT_PATH . 'includes/classes/Debuger.'.PHPEXT);
